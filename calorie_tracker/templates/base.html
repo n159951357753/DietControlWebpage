@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>卡路里紀錄</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 導覽列文字加粗 + 設定 hover 顏色 */
+        .navbar .nav-link {
+            /*font-weight: bold;  粗體 */
+            color: #000 !important; /* 你想要的初始字色（黑色） */
+        }
+        .navbar .nav-link:hover {
+            color: #FF5733 !important; /* 滑鼠移上去的顏色（橘紅色） */
+        }
+        .navbar-brand {
+            font-weight: 700;       /* 更粗 */
+            font-size: 1.5rem;      /* 字體放大 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">卡路里紀錄</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">首頁</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('overview') }}">今日總覽</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('diet_manage') }}">飲食管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('history') }}">紀錄查詢</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('food_manage') }}">食品管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('settings') }}">設定</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">登出</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">登入</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">註冊</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主內容 -->
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Bootstrap JS (讓導覽列折疊能正常運作) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

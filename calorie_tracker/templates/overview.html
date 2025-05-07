@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3 class="mt-4 text-primary">📊 今日總覽</h3>
+
+<div class="card mb-3 border-info">
+    <div class="card-header bg-info text-white">
+        👤 個人基本資料
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">姓名：<strong>{{ current_user.name }}</strong></li>
+            <li class="list-group-item">生日：<strong>{{ current_user.birthdate }}</strong></li>
+            <li class="list-group-item">年齡：<strong>{{ age }} 歲</strong></li>
+            <li class="list-group-item">性別：<strong>{{ current_user.gender }}</strong></li>
+            <li class="list-group-item">身高：<strong>{{ current_user.height }} cm</strong></li>
+            <li class="list-group-item">體重：<strong>{{ current_user.weight }} kg</strong></li>
+        </ul>
+    </div>
+</div>
+
+<div class="card mb-3 border-success">
+    <div class="card-header bg-success text-white">
+        🍱 卡路里資訊
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                今日攝取卡路里：<strong class="text-success">{{ total_calories }} kcal</strong>
+            </li>
+            <li class="list-group-item">
+                建議攝取卡路里：
+                <strong class="text-primary">
+                    {{ suggested_calories + calorie_adjustment }} kcal 
+                    (標準 [{{ suggested_calories }}] + 建議 [{% if calorie_adjustment > 0 %}+{% endif %}{{ calorie_adjustment }}])
+                </strong>
+            </li>
+            <li class="list-group-item">
+                本日距離目標卡路里：
+                <strong>
+                {% set gap = suggested_calories + calorie_adjustment - total_calories %}
+                {% if gap >= 50 %}
+                    <span class="text-warning">
+                        還可以增加 {{ gap }} kcal
+                    </span>
+                {% elif gap <= -50 %}
+                    <span class="text-danger">
+                        應該要減少 {{ gap | abs }} kcal
+                    </span>
+                {% else %}
+                    <span class="text-success">
+                        維持不變 (誤差在正負 50 kcal 以內)
+                    </span>
+                {% endif %}
+                </strong>
+            </li>
+            <li class="list-group-item">
+                💧 建議每日飲水量：<strong>{{ suggested_water }} ml</strong>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="card mb-3 border-warning">
+    <div class="card-header bg-warning text-dark">
+        ⚖️ BMI 與體重資訊
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">當前 BMI：<strong>{{ bmi }}</strong> ({{ bmi_category }})</li>
+            <li class="list-group-item">建議 BMI：<strong>{{ suggested_bmi }}</strong></li>
+            <li class="list-group-item">建議體重：<strong>{{ suggested_weight }} kg</strong></li>
+            <li class="list-group-item">
+                應增減體重：
+                <strong>
+                {% if weight_diff > 0 %}
+                    <span class="text-warning">增加 {{ weight_diff }} kg</span>
+                {% elif weight_diff < 0 %}
+                    <span class="text-danger">減少 {{ weight_diff | abs }} kg</span>
+                {% else %}
+                    <span class="text-success">維持不變</span>
+                {% endif %}
+                </strong>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<table class="table table-striped">
+    <tr>
+        <th>進食時間</th>
+        <th>食品名稱</th>
+        <th>卡路里</th>
+    </tr>
+    {% for record in records %}
+    <tr>
+        <td>{{ record.timestamp }}</td>
+        <td>{{ record.food_name }}</td>
+        <td>{{ record.calories }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

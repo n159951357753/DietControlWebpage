@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>飲食管理</h2>
+    <!-- 右邊按鈕 -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+        新增飲食紀錄
+    </button>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>時間</th>
+            <th>食品名稱</th>
+            <th>類型</th>
+            <th>卡路里</th>
+            <th>販售地點</th>
+            <th>備註</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ record.food_name }}</td>
+            <td>{{ record.food_type }}</td>
+            <td>{{ record.calories }}</td>
+            <td>{{ record.location }}</td>
+            <td>{{ record.notes }}</td>
+            <td>
+                <!-- 編輯按鈕 -->
+                <button type="button" class="btn btn-sm btn-warning me-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editRecordModal"
+                        data-id="{{ record.id }}"
+                        data-timestamp="{{ record.timestamp.strftime('%Y-%m-%dT%H:%M:%S') }}"
+                        data-food_name="{{ record.food_name }}"
+                        data-food_type="{{ record.food_type }}"
+                        data-calories="{{ record.calories }}"
+                        data-location="{{ record.location }}"
+                        data-notes="{{ record.notes }}">
+                    編輯
+                </button>
+
+                <!-- 刪除按鈕 -->
+                <form method="POST" action="{{ url_for('delete_record', record_id=record.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('確定要刪除此紀錄嗎？')">
+                        刪除
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addRecordModalLabel">新增飲食紀錄</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+              {{ form.hidden_tag() }}
+              <div class="mb-3">
+                  {{ form.timestamp.label(class="form-label") }}
+                  {{ form.timestamp(
+                        class="form-control",
+                        type="datetime-local",
+                        step="1",
+                        value=form.timestamp.data.strftime('%Y-%m-%dT%H:%M:%S') if form.timestamp.data else ''
+                    ) }}
+              </div>
+              <div class="mb-3">
+                  {{ form.food_name.label(class="form-label") }}
+                  {{ form.food_name(class="form-control") }}
+              </div>
+              <div class="mb-3">
+                  {{ form.food_type.label(class="form-label") }}
+                  {{ form.food_type(class="form-control") }}
+              </div>
+              <div class="mb-3">
+                  {{ form.calories.label(class="form-label") }}
+                  {{ form.calories(class="form-control") }}
+              </div>
+              <div class="mb-3">
+                  {{ form.location.label(class="form-label") }}
+                  {{ form.location(class="form-control") }}
+              </div>
+              <div class="mb-3">
+                  {{ form.notes.label(class="form-label") }}
+                  {{ form.notes(class="form-control") }}
+              </div>
+              <div class="form-check mb-3">
+                  {{ form.add_to_food(class="form-check-input") }}
+                  {{ form.add_to_food.label(class="form-check-label") }}
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">新增紀錄</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- 編輯 Modal -->
+<div class="modal fade" id="editRecordModal" tabindex="-1" aria-labelledby="editRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editRecordModalLabel">編輯飲食紀錄</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="editRecordForm" method="POST">
+                {{ edit_form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ edit_form.timestamp.label(class="form-label") }}
+                    {{ edit_form.timestamp(class="form-control", id="edit-timestamp", type="datetime-local", step="1") }}
+                </div>
+                <div class="mb-3">
+                    {{ edit_form.food_name.label(class="form-label") }}
+                    {{ edit_form.food_name(class="form-control", id="edit-food_name") }}
+                </div>
+                <div class="mb-3">
+                    {{ edit_form.food_type.label(class="form-label") }}
+                    {{ edit_form.food_type(class="form-control", id="edit-food_type") }}
+                </div>
+                <div class="mb-3">
+                    {{ edit_form.calories.label(class="form-label") }}
+                    {{ edit_form.calories(class="form-control", id="edit-calories") }}
+                </div>
+                <div class="mb-3">
+                    {{ edit_form.location.label(class="form-label") }}
+                    {{ edit_form.location(class="form-control", id="edit-location") }}
+                </div>
+                <div class="mb-3">
+                    {{ edit_form.notes.label(class="form-label") }}
+                    {{ edit_form.notes(class="form-control", id="edit-notes") }}
+                </div>
+                <div class="modal-footer">
+                    {{ edit_form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+<script>
+    var editModal = document.getElementById('editRecordModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var recordId = button.getAttribute('data-id');
+
+        // 設定 action
+        document.getElementById('editRecordForm').action = `/edit_record/${recordId}`;
+
+        // 填入表單值
+        document.getElementById('edit-timestamp').value = button.getAttribute('data-timestamp');
+        document.getElementById('edit-food_name').value = button.getAttribute('data-food_name');
+        document.getElementById('edit-food_type').value = button.getAttribute('data-food_type');
+        document.getElementById('edit-calories').value = button.getAttribute('data-calories');
+        document.getElementById('edit-location').value = button.getAttribute('data-location');
+        document.getElementById('edit-notes').value = button.getAttribute('data-notes');
+    });
+
+
+    var addModal = document.getElementById('addRecordModal');
+    addModal.addEventListener('show.bs.modal', function (event) {
+        var timestampInput = addModal.querySelector('input[name="timestamp"]');
+        if (timestampInput) {
+            // 設定成現在時間 (格式 yyyy-MM-ddTHH:mm:ss)
+            var now = new Date();
+            var yyyy = now.getFullYear();
+            var mm = String(now.getMonth() + 1).padStart(2, '0');
+            var dd = String(now.getDate()).padStart(2, '0');
+            var hh = String(now.getHours()).padStart(2, '0');
+            var min = String(now.getMinutes()).padStart(2, '0');
+            var ss = String(now.getSeconds()).padStart(2, '0');
+            var formatted = `${yyyy}-${mm}-${dd}T${hh}:${min}:${ss}`;
+            timestampInput.value = formatted;
+        }
+    });
+</script>
+
+{% endblock %}
+
+{% if form.errors %}
+<script>
+    var myModal = new bootstrap.Modal(document.getElementById('addRecordModal'));
+    myModal.show();
+</script>
+{% elif edit_form.errors %}
+<script>
+    var editModal = new bootstrap.Modal(document.getElementById('editRecordModal'));
+    editModal.show();
+</script>
+{% endif %}

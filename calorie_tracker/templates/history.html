@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>紀錄查詢</h2>
+<table class="table table-striped">
+    <tr>
+        <th>進食時間</th>
+        <th>食品名稱</th>
+        <th>食品類型</th>
+        <th>卡路里</th>
+        <th>販售地點</th>
+        <th>備註</th>
+    </tr>
+    {% for record in records %}
+    <tr>
+        <td>{{ record.timestamp }}</td>
+        <td>{{ record.food_name }}</td>
+        <td>{{ record.food_type }}</td>
+        <td>{{ record.calories }}</td>
+        <td>{{ record.location }}</td>
+        <td>{{ record.notes }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

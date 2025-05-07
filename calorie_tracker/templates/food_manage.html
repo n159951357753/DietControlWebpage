@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>食品管理</h2>
+<form method="POST" class="card p-4 mb-4">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.type.label(class="form-label") }}
+        {{ form.type(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.calories.label(class="form-label") }}
+        {{ form.calories(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.location.label(class="form-label") }}
+        {{ form.location(class="form-control") }}
+    </div>
+    <div class="d-grid">
+        {{ form.submit(class="btn btn-success") }}
+    </div>
+</form>
+
+<h3>已存在的食品列表</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>名稱</th>
+            <th>類型</th>
+            <th>卡路里</th>
+            <th>販售地點</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for food in foods %}
+        <tr>
+            <td>{{ food.name }}</td>
+            <td>{{ food.type }}</td>
+            <td>{{ food.calories }}</td>
+            <td>{{ food.location }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

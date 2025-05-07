@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4 class="mb-0">更新個人資料</h4>
+        </div>
+        <div class="card-body">
+            {% if profile_form.errors %}
+            <div class="alert alert-danger">
+                請檢查以下錯誤：
+                <ul>
+                {% for field, errors in profile_form.errors.items() %}
+                    {% for error in errors %}
+                        <li>{{ profile_form[field].label.text }} - {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <form method="POST">
+                {{ profile_form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ profile_form.name.label(class="form-label") }}
+                    {{ profile_form.name(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ profile_form.birthdate.label(class="form-label") }}
+                    {{ profile_form.birthdate(class="form-control", type="date") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ profile_form.gender.label(class="form-label") }}
+                    {{ profile_form.gender(class="form-select") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ profile_form.height.label(class="form-label") }}
+                    {{ profile_form.height(class="form-control", placeholder="cm") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ profile_form.weight.label(class="form-label") }}
+                    {{ profile_form.weight(class="form-control", placeholder="kg") }}
+                </div>
+
+                <div class="d-grid">
+                    {{ profile_form.profile_submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">更新帳號 / 密碼</h4>
+        </div>
+        <div class="card-body">
+            {% if account_form.errors %}
+            <div class="alert alert-danger">
+                請檢查以下錯誤：
+                <ul>
+                {% for field, errors in account_form.errors.items() %}
+                    {% for error in errors %}
+                        <li>{{ account_form[field].label.text }} - {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <form method="POST">
+                {{ account_form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ account_form.current_password.label(class="form-label") }}
+                    {{ account_form.current_password(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ account_form.new_username.label(class="form-label") }}
+                    {{ account_form.new_username(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ account_form.new_password.label(class="form-label") }}
+                    {{ account_form.new_password(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ account_form.confirm_new_password.label(class="form-label") }}
+                    {{ account_form.confirm_new_password(class="form-control") }}
+                </div>
+
+                <div class="d-grid">
+                    {{ account_form.account_submit(class="btn btn-warning") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

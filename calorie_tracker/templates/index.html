@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4 fw-bold text-primary">歡迎來到卡路里健康紀錄</h1>
+        <p class="lead">這裡幫助您輕鬆管理每日飲食、掌握卡路里攝取、維持理想體態與健康。</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="{{ url_for('static', filename='images/calorie.jpg') }}" class="card-img-top" alt="卡路里攝取">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>每日卡路里管理</strong></h5>
+                    <p class="card-text">透過飲食紀錄與卡路里計算，幫助您了解自己的攝取狀況，達到控制體重的目標。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="{{ url_for('static', filename='images/bmi.jpg') }}" class="card-img-top" alt="BMI 監測">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>BMI 與健康提示</strong></h5>
+                    <p class="card-text">根據您的身高與體重，自動計算 BMI，並提供健康等級分類與體重建議。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="{{ url_for('static', filename='images/water.jpg') }}" class="card-img-top" alt="飲水提醒">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>飲水量建議</strong></h5>
+                    <p class="card-text">根據體重計算每日建議飲水量，幫助您保持水分充足，促進新陳代謝。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="{{ url_for('static', filename='images/exercise.jpg') }}" class="card-img-top" alt="運動習慣">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>身體活動 & 消耗</strong></h5>
+                    <p class="card-text">結合基礎代謝與活動消耗提醒，協助您達到每日熱量平衡，保持健康生活。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-4 text-center">
+        <div>
+            🌟 <strong>小提醒： 定期更新個人資料（如身高、體重）可獲得更精準的健康分析！</strong>
+        </div>
+    </div>
+    <div class="alert alert-info mt-4 text-center">
+        <div>
+            本網站非用於營利，內容僅用於學術研究，相關網路參考圖文來自以下出處:
+        </div>
+        
+        <div>
+            YAHOO!早安健康  https://www.edh.tw/
+        </div>
+        <div>
+            Heho健康  https://heho.com.tw/
+        </div>
+        <div>
+            林黑潮診所|潮代診所  https://www.dr-heichao.com.tw/
+        </div>
+    </div>
+</div>
+{% endblock %}

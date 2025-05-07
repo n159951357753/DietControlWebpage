@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card mx-auto mt-5" style="max-width: 500px;">
+    <div class="card-body">
+        <h2 class="card-title text-center">註冊</h2>
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            請檢查以下錯誤：
+            <ul>
+            {% for field, errors in form.errors.items() %}
+                {% for error in errors %}
+                    <li>{{ form[field].label.text }} - {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.birthdate.label(class="form-label") }}
+                {{ form.birthdate(class="form-control", type="date") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.gender.label(class="form-label") }}
+                {{ form.gender(class="form-select") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.height.label(class="form-label") }}
+                {{ form.height(class="form-control", placeholder="cm") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.weight.label(class="form-label") }}
+                {{ form.weight(class="form-control", placeholder="kg") }}
+            </div>
+
+            <hr>
+
+            <div class="mb-3">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.confirm_password.label(class="form-label") }}
+                {{ form.confirm_password(class="form-control") }}
+            </div>
+
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
